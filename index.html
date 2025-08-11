@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/fontawesome.all.min.css">
+    <script defer src="js/fontawesome.all.min.js"></script>
+
+
+    <title>Spatiotemporally Consistent Indoor Lighting Estimation with Diffusion Priors</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="Spatiotemporally Consistent Indoor Lighting Estimation with Diffusion Priors" />
+    <meta property="og:description"
+        content="Spatiotemporally Consistent Indoor Lighting Estimation with Diffusion Priors." />
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css"> -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/fontawesome.all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"> -->
+
+    <!-- Google tag (gtag.js) -->
+    <!-- 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+        </script>
+    <script defer src="js/fontawesome.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    -->
+    
+    <script src="js/app.js"></script>
+    
+    <style>
+        html {
+            /* Remove touch delay: */
+            touch-action: manipulation;
+        }
+
+        .final-element {
+            white-space: nowrap;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #664d03;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 1rem auto;
+            max-width: 600px;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .warning-title {
+            align-items: center;
+            display: flex;
+            font-size: 1.1rem;
+            font-weight: 600;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-title svg {
+            height: 24px;
+            width: 24px;
+        }
+        .row{
+            font-weight: 400; /* 或 bold / 700 */
+        }
+
+        .row2{
+            font-weight: 100; /* 或 bold / 700 */
+        }
+        .warning-message {
+            line-height: 1.5;
+            margin: 0;
+        }
+    </style>
+</head>
+
+
+<body style="padding: 5%; padding-top: min(15px, 5%); padding-bottom: min(5px, 5%); width: 100%">
+    <div class="container-lg text-center" style="max-width: 1200px; margin: auto;" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>Spatiotemporally Consistent Indoor Lighting Estimation with Diffusion Priors</br>
+            </h2>
+        </div>
+        <br>
+        
+        <div class="row text-center">
+            <h4 class="col-md-12 text-center">
+                <i>SIGGRAPH 2025</i>
+            </h4>
+            <br>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://oriontmt.github.io/">
+                            Mutian Tong
+                        </a><sup>1</sup>
+                    </li>
+                    <li>
+                        <a href="https://www.cs.columbia.edu/~rundi/">
+                            Rundi Wu
+                        </a><sup>1</sup>
+                    </li>
+                    <li>
+                        <a href="https://www.cs.columbia.edu/~cxz/">
+                            Changxi Zheng
+                        </a><sup>1</sup>
+                    </li>
+                    <wbr>
+                    <!-- </br>Google -->
+                </ul>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-12 text-center">
+                <sup>1</sup>Columbia University
+            </div>
+            <!-- <div class="col-md-12 text-center">
+                * equal contribution
+            </div> -->
+        </div>
+        <div class="column has-text-centered">
+            <div class="publication-links">
+                <span class="link-block">
+                    <a href=""
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                    </a>
+                </span>
+                <span class="link-block">
+                    <a href=""
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>Code</span>
+                    </a>
+                </span>
+
+                <!-- <span class="link-block">
+                <a href="https://github.com/a1600012888"
+                class="external-link button is-normal is-rounded is-dark">
+                <svg style="width:16px;height:16px;margin-left:-0px;margin-right:6px" width="16px" height="16px" viewBox="0 0 44 44"><path fill="currentColor" d="M10,26h8a2,2,0,0,0,2-2V14a2,2,0,0,0-2-2H10a2,2,0,0,0-2,2V24A2,2,0,0,0,10,26Zm0-12h8V24H10Zm15,4H35a1,1,0,0,0,0-2H25a1,1,0,0,0,0,2Zm0-4h6a1,1,0,0,0,0-2H25a1,1,0,0,0,0,2Zm0,8h4a1,1,0,0,0,0-2H25a1,1,0,0,0,0,2ZM42,2H24a2,2,0,0,0-4,0H2A2,2,0,0,0,0,4V6A2,2,0,0,0,2,8V32a2,2,0,0,0,2,2H21v2.59l-5.71,5.71a1,1,0,1,0,1.41,1.41L22,38.41l5.29,5.29a1,1,0,1,0,1.41-1.41L23,36.59V34H40a2,2,0,0,0,2-2V8a2,2,0,0,0,2-2V4A2,2,0,0,0,42,2ZM40,32H4V8H40ZM42,6H2V4H42ZM25,26H35a1,1,0,0,0,0-2H25a1,1,0,0,0,0,2Z"></path>
+                </svg>
+               <span>Slides</span>
+               </a>
+              </span> -->
+
+                <!-- <span class="link-block">
+                <a href="https://mitprod-my.sharepoint.com/:v:/g/personal/tianweiy_mit_edu/EXBhFvm4fA5Ag1VYhXnHlh4BhYPjw0ElCr3x_A6SuZMo2g?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0RpcmVjdCJ9fQ&e=uU19gS"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-video"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+            </div>
+            <div class="row">
+            <div class="col-md-10 offset-md-1 text-center">
+                <video id="co3d-grid" class="w-100" autoplay loop muted controls>
+                <source src="videos/teaser/fastForward.mp4" type="video/mp4" />
+                </video>
+
+                <p class="mt-2"> <strong>TL;DR: </strong>Our method can recover 4D lighting estimation from any monocular RGB video or image input.</p>
+            </div>
+            
+            </div>
+            <br><br>
+            <div class="row">
+            <div class="col-md-10 offset-md-1 text-center">
+                <!-- 图片宽度自动适配列宽 -->
+                <img src="videos/pipeline2.png"
+                    class="img-fluid"
+                    alt="PhysDreamer teaser">
+
+                <p class="mt-2"> <strong>Pipeline overview.</strong> We first fine-tune an inpainting diffusion model on small-scale synthetic datasets, which enables it to generalize well to real-world indoor scenes. Because ground-truth 4D lighting data are scarce, we train only on static scenes and, during optimization, lift the model’s predictions into a temporally consistent 4D lighting representation using our proposed method.</p>
+            </div>
+            </div>
+
+        <br><br>
+        <div style="background-color: #f2f2f2; width: 100%; padding: 20px 0; margin: 20px 0;">
+        <div class="row2" style="max-width: 1200px; margin: auto;">
+            <div class="col-md-8 offset-md-2">
+                <h3 class="text-center">Abstract</h3>
+                <p style="text-align: justify;">
+                    Indoor lighting estimation from a single image or video remains a challenge due to its highly ill-posed nature, especially when the lighting condition of the scene varies spatially and temporally. We propose a method that estimates from an input video a continuous light field describing the spatiotemporally varying lighting of the scene. We leverage 2D diffusion priors for optimizing such light field represented as a MLP. To enable zero-shot generalization to in-the-wild scenes, we fine-tune a pre-trained image diffusion model to predict lighting at multiple locations by jointly inpainting multiple chrome balls as light probes. We evaluate our method on indoor lighting estimation from a single image or video and show superior performance over compared baselines. Most importantly, we highlight results on spatiotemporally consistent lighting estimation from in-the-wild videos, which is rarely demonstrated in previous works.
+                </p>
+            </div>
+        </div>
+    </div>
+        <br>
+        <main role="main">
+
+            <div id="viewer">
+
+                <div id="image-lighting">
+                    <div class="row">
+                        <div class="col-md-10 offset-md-1">
+                            <h3>Spatially Varying Lighting Estimation from Image</h3>
+                            <p class="text-justify" style="text-align: left;">
+                                Our method enables spatially varying lighting estimation from a single image.
+                                In the video below, we show on the left the estimating lighting as a chrome ball moving in space and show on the right the corresponding depth map on the right.
+                            </p>
+
+                            <video id="static_video" class="video" width=100%  loop playsinline
+                                autoplay muted controls style="max-width: 1024px;">
+                                <source src="videos/static/room12.png" />
+                            </video>
+                            <br>
+                        </div>
+
+                        <p>
+                            Try selecting different scenes:
+                        </p>
+                        <div class="pill-row scene-pills" id="static-pills" role="group"
+                            aria-relevant="additions text">
+                            <div class="pill scene-pill" data-value="room12">
+                                <img class="card-img" src="videos/static/room12.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="kitchen">
+                                <img class="card-img" src="videos/static/kitchen.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="room5">
+                                <img class="card-img" src="videos/static/room5.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="bedroom">
+                                <img class="card-img" src="videos/static/bedroom.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="bedroom2">
+                                <img class="card-img" src="videos/static/bedroom2.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="conference">
+                                <img class="card-img" src="videos/static/conference.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="office">
+                                <img class="card-img" src="videos/static/office.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+
+                <script>
+                    compareDiv = document.querySelector("#image-lighting")
+                    activeScene_static = "room12"
+
+                    const methodPills_static = compareDiv.querySelectorAll('.method-pill');
+                    const scenePills_static = compareDiv.querySelectorAll(".scene-pill")
+                    const showVideo_static = compareDiv.querySelector('#static_video')
+
+                    for (scenePill of scenePills_static) {
+                        scenePill.addEventListener('click', function () {
+                            activeScene_static = this.getAttribute('data-value');
+                            updateDisplayStatic();
+                        });
+                    }
+
+                    function updateDisplayStatic() {
+                        for (scenePill of scenePills_static) {
+                            if (scenePill.getAttribute('data-value') == activeScene_static) {
+                                scenePill.classList.add('active');
+                            } else {
+                                scenePill.classList.remove('active')
+                            }
+                        }
+                        showVideo_static.src = `videos/static/${activeScene_static}.mp4`
+                        showVideo_static.playbackRate = 1.0;
+                    }
+                    // Update initial display
+                    updateDisplayStatic()
+
+                </script>
+
+                <div id="video-lighting">
+                    <div class="row">
+                        <div class="col-md-10 offset-md-1">
+                            <h3>Spatiotemporally Varying Lighting Estimation from Video</h3>
+                            <p class="text-justify" style="text-align: left;">
+                                Our method enables lighting estimation from a single video of dynamic lighting conditions.
+                                In the video below, we show on the left the estimating lighting as a chrome ball moving in space and show on the right the corresponding depth map.
+                            </p>
+
+                            <video id="dynamic_video" class="video" width=100%  loop playsinline
+                                autoplay muted controls style="max-width: 1024px;">
+                                <source src="videos/dynamic/fire.mp4" />
+                            </video>
+                            <br>
+                        </div>
+                        <div class="row text-center">
+
+
+                        <p>
+                            Try selecting different scenes:
+                        </p>
+                        <div class="pill-row scene-pills" id="dynamic-pills" role="group"
+                            aria-relevant="additions text">
+                            <div class="pill scene-pill" data-value="bed">
+                                <img class="card-img" src="videos/dynamic/bed.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="fire">
+                                <img class="card-img" src="videos/dynamic/fire.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="table">
+                                <img class="card-img" src="videos/dynamic/table.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="opencurtain">
+                                <img class="card-img" src="videos/dynamic/opencurtain.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="wall">
+                                <img class="card-img" src="videos/dynamic/wall.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="twopeople">
+                                <img class="card-img" src="videos/dynamic/twopeople.png">
+                            </div>
+                            <div class="pill scene-pill" data-value="girl">
+                                <img class="card-img" src="videos/dynamic/girl.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                
+                <script>
+                    compareDiv = document.querySelector("#video-lighting")
+                    activeScene_dynamic = "fire"
+
+                    const methodPills_dynamic = compareDiv.querySelectorAll('.method-pill');
+                    const scenePills_dynamic = compareDiv.querySelectorAll(".scene-pill")
+                    const showVideo_dynamic = compareDiv.querySelector('#dynamic_video')
+
+                    for (scenePill of scenePills_dynamic) {
+                        scenePill.addEventListener('click', function () {
+                            activeScene_dynamic = this.getAttribute('data-value');
+                            updateDisplayDynamic();
+                        });
+                    }
+
+                    function updateDisplayDynamic() {
+                        for (scenePill of scenePills_dynamic) {
+                            if (scenePill.getAttribute('data-value') == activeScene_dynamic) {
+                                scenePill.classList.add('active');
+                            } else {
+                                scenePill.classList.remove('active')
+                            }
+                        }
+                        showVideo_dynamic.src = `videos/dynamic/${activeScene_dynamic}.mp4`
+                        showVideo_dynamic.playbackRate = 1.0;
+                    }
+                    // Update initial display
+                    updateDisplayDynamic()
+
+                </script>
+
+            </div>
+        </div>
+        <div id="video-lighting">
+                    <div class="row">
+                        <div class="col-md-10 offset-md-1">
+                            <h3>Objects relighting results on real-world videos</h3>
+                            <p class="text-justify" style="text-align: left;">
+                                The environment maps estimated by our method can be used to relight objects in the scene. Enabling realistic object insertion and relighting in real-world videos.
+                            </p>                            
+                            <br>
+                        </div>
+                        <div class="row text-center">
+                        <div class="row">
+                        <div class="col-md-10 offset-md-1 text-center">
+                            <!-- 图片宽度自动适配列宽 -->
+                            <img src="videos/extra1.png"
+                                class="img-fluid"
+                                alt="PhysDreamer teaser">
+                            <br><br>
+                            <img src="videos/extra2.png"
+                                class="img-fluid"
+                                alt="PhysDreamer teaser">
+                        </div>
+                        </div>
+
+        </main>
+        <div class="row">
+        <div class="col-md-12 text-center">
+            <!-- 关键就是这里加 text-center -->
+            <h3 class="text-center">Citation</h3>
+
+            <div class="form-group">
+            <textarea id="bibtex"
+                class="form-control bg-light"
+                readonly
+                onclick="this.select();"
+                onfocus="this.select();"
+                style="height:160px; max-width:700px; margin:auto;">
+@inproceedings{10.1145/3721238.3730749,
+author = {Tong, Mutian and Wu, Rundi and Zheng, Changxi},
+title = {Spatiotemporally Consistent Indoor Lighting Estimation with Diffusion Priors},
+year = {2025},
+isbn = {9798400715402},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3721238.3730749},
+doi = {10.1145/3721238.3730749},
+booktitle = {Proceedings of the Special Interest Group on Computer Graphics and Interactive Techniques Conference Conference Papers},
+articleno = {107},
+numpages = {11},
+keywords = {Lighting estimation, diffusion models},
+series = {SIGGRAPH Conference Papers '25}
+}
+            </textarea>
+            </div>
+        </div>
+        </div>
+
+
+
+
+
+    </div>
+</body>
+
+</html>
